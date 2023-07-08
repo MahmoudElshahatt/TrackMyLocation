@@ -45,7 +45,10 @@ fun Context.isLocationEnabled(): Boolean {
 }
 
 @SuppressLint("MissingPermission", "SetTextI18n")
-fun Context.getLocation(activity: Activity) {
+fun Context.getLocation(
+    activity: Activity,
+    onLatLong: (Double, Double) -> Unit
+) {
     var fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(activity)
     if (checkPermissions()) {
@@ -61,7 +64,7 @@ fun Context.getLocation(activity: Activity) {
                             1
                         ) as List<Address>
                     Log.e("CurrentLocation", getFormattedLocation(list))
-
+                    onLatLong(list[0].latitude, list[0].longitude)
                     Toast.makeText(this, getFormattedLocation(list), Toast.LENGTH_LONG).show()
                 }
             }

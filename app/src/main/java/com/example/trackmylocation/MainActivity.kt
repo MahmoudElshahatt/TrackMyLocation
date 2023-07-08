@@ -15,14 +15,18 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    private val onLatLong = { lat: Double, long: Double ->
+        binding.txtLat.text = lat.toString()
+        binding.txtLong.text = long.toString()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.btnLocation.setOnClickListener {
-            getLocation(this)
+            getLocation(this, onLatLong)
         }
-
     }
 
 
@@ -34,10 +38,9 @@ class MainActivity : AppCompatActivity() {
     ) {
         if (requestCode == locationPermissionId) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getLocation(this)
+                getLocation(this, onLatLong)
             }
         }
     }
-
 
 }
